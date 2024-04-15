@@ -1,0 +1,6 @@
+{
+    "posts": [
+      { "id": "1", "title": "Lcuas fazendo teste", "author":"lcuas linhares","content":"Um estudo sobre quasar" },
+      { "id": "2", "title": "Lcuas fazendo teste2", "author":"lcuas linhares","content":"Um estudo sobre quasar22" }
+    ]
+}
