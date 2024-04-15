@@ -7,7 +7,7 @@
         <h2 style="font-weight: bold;">Logar</h2>
 
           <label>
-              <span> Login </span>
+              <span> Login</span>
               <q-input rounded outlined v-model="text" label="Digite seu Email" />
            </label>
 
