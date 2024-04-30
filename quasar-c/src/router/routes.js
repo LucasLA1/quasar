@@ -3,9 +3,10 @@ const routes = [
     path: '/index',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/index', name: 'home', component: () => import('pages/IndexPage.vue') },
-      { path: '/DadosTabela', name: 'dados', component: () => import('pages/DadosTabela.vue') },
-      { path: '/LoginInicio', name: 'Login', component: () => import('src/pages/LoginInicio.vue') }
+      { path: '/LoginInicio', name: 'Login', component: () => import('src/pages/LoginInicio.vue') },
+      { path: '/AgendarConsultas', name: 'AgendarConsultas', component: () => import('pages/AgendarConsultas.vue') },
+      { path: '/Criar', name: 'criar', component: () => import('pages/CriarConta.vue') }
+
     ]
   },
 

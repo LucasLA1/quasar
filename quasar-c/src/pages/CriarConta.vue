@@ -1,20 +1,47 @@
 <template>
   <div class="primeira">
-    <form class="form" @submit.prevent="fazerLogin">
-      <h2 style="font-weight: bold;">Logar</h2>
+    <form class="form" >
+      <h2 style="font-weight: bold;">Registar</h2>
       <label>
-        <span> Login </span>
+        <span> Nome Completo </span>
+        <q-input rounded outlined v-model="login" label="Digite seu Nome" />
+      </label>
+      <label>
+        <span> Contato </span>
+        <q-input rounded outlined v-model="login" label="Digite seu Contato" />
+      </label>
+      <label>
+        <span> Email</span>
         <q-input rounded outlined v-model="login" label="Digite seu Email" />
       </label>
       <label>
         <span> Senha</span>
         <q-input type="password" rounded outlined v-model="senha" label="Digite sua Senha" />
+        <span> Confirme sua senha</span>
+        <q-input type="password" rounded outlined v-model="senha" label="Digite novamente sua Senha" />
+      </label>
+      <label>
+        <span> Data de Nascimento</span>
+        <div class="date-input-container">
+          <q-input filled v-model="date" mask="date" :rules="['date']">
+            <template v-slot:append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="date">
+                    <div class="row items-center justify-end">
+                      <q-btn v-close-popup label="Enviar" color="secondary" flat text-color="white" />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
       </label>
       <label class="salvar-senha-label">
-        <q-toggle v-model="salvarSenha" color="secondary" label="Salvar Senha" />
-       </label>
-        <q-btn flat color="primary" label="Registrar" type="submit" text-color="white" @click="irParaRegistro"/>
-      <q-btn flat color="secondary" label="Entrar" type="submit" text-color="white" />
+        <q-toggle v-model="salvarSenha" color="secondary" label="Concordo com os termos" />
+      </label>
+      <q-btn flat color="secondary" label="Criar" type="submit" text-color="white" @click="irParaAgendar"/>
     </form>
   </div>
 </template>
@@ -33,6 +60,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      top: 48%;
+      margin-top: 50px;
   }
   input, button{
       border:none;
@@ -41,15 +70,22 @@
   }
 
   h2 {
-      color: #17a2b8;
-      padding-top: 10px;
-      font-size: 30px;
-      text-align: center;
+    color: #17a2b8;
+    padding-top: 10px;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .date-input-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   }
 
   .form{
 
-      padding: 50px 30px;
+      padding: 20px 30px;
       -webkit-transition:-webkit-transform 1.2s ease-in-out;
       transition: -webkit-transform 1.2s ease-in-out;
       transition: transform 1.2s ease-in-out;
@@ -59,7 +95,7 @@
   label{
       display: block;
       width: 100%;
-      margin: 15px auto 0;
+      margin-bottom: 10px;
   }
 
   label span{
@@ -90,7 +126,6 @@
       color: white;
       font-size: 15px;
       cursor: pointer;
-
   }
 
   button:hover {
@@ -111,21 +146,16 @@ export default {
     const senha = ref('')
     const salvarSenha = ref(false)
     const router = useRouter()
-
-    const fazerLogin = () => {
+    const irParaAgendar = () => {
       router.push({ name: 'AgendarConsultas' })
     }
 
-    const irParaRegistro = () => {
-      router.push({ name: 'criar' })
-    }
-
     return {
+      date: ref('2024/04/10'),
       login,
       senha,
       salvarSenha,
-      fazerLogin,
-      irParaRegistro
+      irParaAgendar
     }
   }
 }
