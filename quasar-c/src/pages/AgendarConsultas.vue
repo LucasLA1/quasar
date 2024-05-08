@@ -82,7 +82,7 @@
         </div>
 
         <div class="button-group">
-          <q-btn label="Agendar" type="submit" color="secondary"/>
+          <q-btn label="Agendar" type="submit" color="secondary" @click="agendar" />
           <q-btn label="Limpar" type="reset" color="secondary" flat class="q-ml-sm" />
         </div>
       </q-form>
@@ -92,6 +92,7 @@
 
 <script>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
   setup () {
@@ -133,8 +134,26 @@ export default {
     ]
     const firstRow = timeRows.slice(0, 4)
     const secondRow = timeRows.slice(4)
-
     const selectedTimes = ref([])
+
+    const router = useRouter()
+
+    const agendar = () => {
+      router.push('/Consultas')
+    }
+
+    const onReset = () => {
+      name.value = null
+      age.value = null
+      specialty.value = null
+      service.value = null
+      date.value = null
+      accept.value = false
+    }
+
+    const toggleTime = (row) => {
+      row.selected = !row.selected
+    }
 
     return {
       name,
@@ -149,26 +168,15 @@ export default {
       selectedTimes,
       firstRow,
       secondRow,
-
-      onReset () {
-        name.value = null
-        age.value = null
-        specialty.value = null
-        service.value = null
-        date.value = null
-        accept.value = false
-      },
-
-      toggleTime (row) {
-        row.selected = !row.selected
-      }
+      agendar,
+      onReset,
+      toggleTime
     }
   }
 }
 </script>
 
 <style scoped>
-
 .centered-box {
   display: Block;
   justify-content: center;
@@ -226,5 +234,4 @@ export default {
   font-size: 30px;
   width: 100%;
 }
-
 </style>

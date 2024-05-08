@@ -1,6 +1,6 @@
 <template>
-  <div class="primeira">
-    <form class="form" >
+  <div class="primeira" >
+    <form class="form" @submit.prevent="enviarFormulario" >
       <h2 style="font-weight: bold;">Registar</h2>
       <label>
         <span> Nome Completo </span>
@@ -149,13 +149,17 @@ export default {
     const irParaAgendar = () => {
       router.push({ name: 'AgendarConsultas' })
     }
+    const enviarFormulario = () => {
+      router.push({ name: 'AgendarConsultas' })
+    }
 
     return {
       date: ref('2024/04/10'),
       login,
       senha,
       salvarSenha,
-      irParaAgendar
+      irParaAgendar,
+      enviarFormulario
     }
   }
 }

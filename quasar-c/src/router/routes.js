@@ -1,11 +1,18 @@
 const routes = [
   {
-    path: '/index',
+    path: '/AgendarConsultas',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/LoginInicio', name: 'Login', component: () => import('src/pages/LoginInicio.vue') },
       { path: '/AgendarConsultas', name: 'AgendarConsultas', component: () => import('pages/AgendarConsultas.vue') },
-      { path: '/Criar', name: 'criar', component: () => import('pages/CriarConta.vue') }
+      { path: '/Consultas', name: 'Consultas', component: () => import('pages/ConsultasAtendimentos.vue') }
+    ]
+  },
+  {
+    path: '/LoginInicio',
+    component: () => import('layouts/LoginLayout.vue'),
+    children: [
+      { path: '/LoginInicio', name: 'Login', component: () => import('src/pages/LoginInicio.vue') },
+      { path: '/Criar', name: 'Criar', component: () => import('pages/CriarConta.vue') }
 
     ]
   },
@@ -14,7 +21,7 @@ const routes = [
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    redirect: '/index',
+    redirect: '/LoginInicio',
     component: () => import('pages/ErrorNotFound.vue')
   }
 ]
