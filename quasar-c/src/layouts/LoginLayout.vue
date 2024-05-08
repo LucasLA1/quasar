@@ -2,47 +2,11 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated class="toolbar-green">
       <q-toolbar color="#24cb53">
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-          class="menu-icon"
-        />
-
         <q-toolbar-title style="color: white;">
           Agenda App
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      class="drawer-green"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="menu-header"
-          style="font-size: 20px;"
-        >
-          Menus
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-          class="menu-item"
-          style="font-size: 18px;"
-        />
-      </q-list>
-    </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -51,9 +15,14 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
+  {
+    title: 'Login',
+    caption: '',
+    icon: 'home',
+    route: { name: 'Login' }
+  },
   {
     title: 'Agendar',
     caption: '',
@@ -61,19 +30,15 @@ const linksList = [
     route: { name: 'AgendarConsultas' }
   },
   {
-    title: 'Consultas',
+    title: 'Criar Conta',
     caption: '',
     icon: 'home',
-    route: { name: 'Consultas' }
+    route: { name: 'criar' }
   }
 ]
 
 export default defineComponent({
-  name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
+  name: 'LoginLayout',
 
   setup () {
     const leftDrawerOpen = ref(false)

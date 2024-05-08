@@ -1,6 +1,6 @@
-<template>
+<template q-model="LoginLayout">
   <div class="primeira">
-    <form class="form" @submit.prevent="fazerLogin">
+    <form class="form">
       <h2 style="font-weight: bold;">Logar</h2>
       <label>
         <span> Login </span>
@@ -13,8 +13,8 @@
       <label class="salvar-senha-label">
         <q-toggle v-model="salvarSenha" color="secondary" label="Salvar Senha" />
        </label>
-        <q-btn flat color="primary" label="Registrar" type="submit" text-color="white" @click="irParaRegistro"/>
-      <q-btn flat color="secondary" label="Entrar" type="submit" text-color="white" />
+        <q-btn flat color="primary" label="Registrar" type="button" text-color="white" @click="irParaRegistro"/>
+      <q-btn flat color="secondary" label="Entrar" type="button" text-color="white" @click="fazerLogin"/>
     </form>
   </div>
 </template>
@@ -117,7 +117,7 @@ export default {
     }
 
     const irParaRegistro = () => {
-      router.push({ name: 'criar' })
+      router.push({ name: 'Criar' })
     }
 
     return {
