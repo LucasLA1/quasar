@@ -1,7 +1,6 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      style
       flat bordered
       ref="tableRef"
       title="Agendamentos"
@@ -9,113 +8,118 @@
       :columns="columns"
       :table-colspan="9"
       row-key="index"
+      title-class="custom-title-color"
+      v-show="!isLoading"
     >
       <template v-slot:body="props">
-        <q-tr>
+        <q-tr :props="props">
           <q-td key="name" :props="props">
             {{ props.row.name }}
           </q-td>
           <q-td key="contatos" :props="props">
-            {{ props.row.contatos }}
+            {{ props.row.contato }}
           </q-td>
           <q-td key="Data" :props="props">
-            {{ props.row.Data }}
+            {{ props.row.date }}
           </q-td>
           <q-td key="Hora" :props="props">
-            {{ props.row.hora }}
+            {{ props.row.selectedTimes }}
           </q-td>
           <q-td key="Especialidade" :props="props">
-            {{ props.row.especialidade }}
+            {{ props.row.specialty }}
           </q-td>
           <q-td key="Serviço" :props="props">
-            {{ props.row.servico }}
+            {{ props.row.service }}
           </q-td>
-          <q-td q-td class="text-right" >
-            <q-btn  color=red label="Desmarcar" @click="handleButtonClick(props.row)" />
+          <q-td class="text-right">
+            <q-btn color="red" label="Desmarcar" @click="handleButtonClick(props.row)" />
           </q-td>
         </q-tr>
+        <q-loading :showing="isLoading" />
       </template>
     </q-table>
+
+    <q-loading :showing="isLoading" />
   </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 export default {
   setup () {
-    const router = useRouter()
-
     const columns = [
-      {
-        name: 'name',
-        required: true,
-        label: ' Nome ',
-        align: 'left',
-        field: row => row.name,
-        format: val => `${val}`,
-        sortable: true
-      },
-      { name: 'contatos', align: 'center', label: 'Contato', field: 'contatos', sortable: true },
-      { name: 'Data', label: 'Data', field: 'fat', sortable: true },
-      { name: 'Hora', label: 'Hora', field: 'hora', sortable: true },
-      { name: 'Especialidade', label: 'Especialidade', field: 'especialidade' },
-      { name: 'Serviço', label: 'Serviço', field: 'servico' }
+      { name: 'name', required: true, label: 'Nome', align: 'left', field: row => row.name, format: val => `${val}`, sortable: true },
+      { name: 'contatos', align: 'center', label: 'Contato', field: 'contato', sortable: true },
+      { name: 'Data', label: 'Data', field: 'date', sortable: true },
+      { name: 'Hora', label: 'Hora', field: 'selectedTimes', sortable: true },
+      { name: 'Especialidade', label: 'Especialidade', field: 'specialty' },
+      { name: 'Serviço', label: 'Serviço', field: 'service' }
     ]
 
-    const rows = [
-      {
-        name: 'Igor',
-        contatos: '9999-1212',
-        Data: '06/05/2024',
-        hora: '20:32',
-        especialidade: 'Nutricionista',
-        servico: 'Serviço A'
-      },
-      {
-        name: 'Joana',
-        contatos: '8888-3434',
-        Data: '07/05/2024',
-        hora: '15:45',
-        especialidade: 'Psicóloga',
-        servico: 'Serviço B'
-      },
-      {
-        name: 'Pedro',
-        contatos: '7777-5656',
-        Data: '08/05/2024',
-        hora: '09:00',
-        especialidade: 'Fisioterapeuta',
-        servico: 'Serviço C'
-      },
-      {
-        name: 'Mariana',
-        contatos: '6666-7878',
-        Data: '09/05/2024',
-        hora: '14:30',
-        especialidade: 'Dentista',
-        servico: 'Serviço D'
-      },
-      {
-        name: 'Lucas',
-        contatos: '5555-9090',
-        Data: '10/05/2024',
-        hora: '11:15',
-        especialidade: 'Nutricionista',
-        servico: 'Serviço E'
+    const rows = ref([])
+    const isLoading = ref(false)
+
+    const fetchContacts = async () => {
+      try {
+        const response = await axios.get('https://660c98833a0766e85dbe5c0a.mockapi.io/user')
+        return response.data
+      } catch (error) {
+        console.error('Erro ao buscar os contatos:', error)
+        return []
       }
-    ]
-    const handleButtonClick = (row) => {
-      router.push({ name: 'AgendarConsultas' })
     }
+
+    const fetchAppointments = async () => {
+      isLoading.value = true
+      try {
+        const appointmentsResponse = await axios.get('https://66551cb63c1d3b6029384591.mockapi.io/teste')
+        const contacts = await fetchContacts()
+
+        const appointments = appointmentsResponse.data
+
+        const mergedData = appointments.map(appointment => {
+          const contact = contacts.find(contact => contact.id === appointment.id)
+          return {
+            ...appointment,
+            contato: contact ? contact.contato : 'N/A'
+          }
+        })
+
+        rows.value = mergedData
+      } catch (error) {
+        console.error('Erro ao buscar os dados:', error)
+      } finally {
+        isLoading.value = false
+      }
+    }
+
+    const handleButtonClick = async (row) => {
+      isLoading.value = true
+      try {
+        await axios.delete(`https://66551cb63c1d3b6029384591.mockapi.io/teste/${row.id}`)
+        rows.value = rows.value.filter(r => r !== row)
+      } catch (error) {
+        console.error('Erro ao excluir o dado:', error)
+      } finally {
+        isLoading.value = false
+      }
+    }
+
+    onMounted(() => {
+      fetchAppointments()
+    })
 
     return {
       columns,
       rows,
-      handleButtonClick
+      handleButtonClick,
+      isLoading
     }
   }
 }
+
 </script>
 
 <style>
@@ -132,5 +136,13 @@ button {
   color: white;
   font-size: 15px;
   cursor: pointer;
+}
+.custom-title-color{
+  display: flex;
+  justify-content: center;
+  color: #3fa6b8;
+  font-weight: bold;
+  font-size: 30px;
+  width: 100%;
 }
 </style>
