@@ -43,7 +43,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container >
       <router-view />
     </q-page-container>
   </q-layout>
@@ -57,13 +57,13 @@ const linksList = [
   {
     title: 'Agendar',
     caption: '',
-    icon: 'home',
+    icon: 'import_contacts',
     route: { name: 'AgendarConsultas' }
   },
   {
     title: 'Consultas',
     caption: '',
-    icon: 'home',
+    icon: 'list',
     route: { name: 'Consultas' }
   }
 ]
@@ -95,4 +95,9 @@ export default defineComponent({
 .drawer-green { background-color: #ebebeb; color: rgb(0, 0, 0); }
 .menu-header { color: black; }
 .menu-item { color: black; }
+.q-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 </style>
